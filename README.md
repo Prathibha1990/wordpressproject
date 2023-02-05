@@ -4,7 +4,7 @@ and
 You can assume some/all AWS services are already started manually and
 running, or start/configure them from within the playbook?
 
-# ec2.yml
+# awsha.yml
 Here's an updated playbook that launches an EC2 instance in an Auto Scaling Group for high availability, 
 and sets up a load balancer with an RDS database for WordPress.
 
@@ -25,7 +25,7 @@ Clone the repository or download the playbook.
 Open a terminal window and navigate to the directory where the playbook is stored.
 Run the following command to execute the playbook:
 Copy code
-ansible-playbook ec2.yml
+ansible-playbook awsha.yml
 Wait for the playbook to complete the execution, which typically takes a few minutes.
 Access the WordPress site using the URL provided by the ELB.
 
