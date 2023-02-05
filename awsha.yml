@@ -1,0 +1,93 @@
+---
+- name: Deploy highly available WordPress on AWS EC2 instance
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Launch EC2 instance in an Auto Scaling Group
+    ec2_asg:
+      launch_config_name: WordPress_Launch_Config
+      instance_type: t2.micro
+      image_id: ami-08e637cea2f053dfa
+      region: us-east-1
+      key_name: 23rlkey
+      vpc_zone_identifier: subnet-0ec33c1c9a6a26a09
+      desired_capacity: 2
+      min_size: 2
+      max_size: 4
+      wait: yes
+      termination_policies: ["OldestInstance"]
+  - name: Add the new EC2 instances to host group
+    add_host:
+      hostname: "{{ item.public_dns_name }}"
+      groupname: wordpress_instance
+    with_items: "{{ ec2_asg.instances }}"
+  - name: Install Apache, PHP, and MySQL
+    become: yes
+    become_user: root
+    apt:
+      name:
+        - apache2
+        - php
+        - libapache2-mod-php
+        - mysql-server
+        - php-mysql
+      state: present
+  - name: Start Apache
+    become: yes
+    become_user: root
+    service:
+      name: apache2
+      state: started
+  - name: Download and extract WordPress
+    become: yes
+    become_user: root
+    unarchive:
+      src: https://wordpress.org/latest.tar.gz
+      dest: /var/www/html/
+      remote_src: yes
+  - name: Configure WordPress
+    become: yes
+    become_user: root
+    copy:
+      src: wp-config.php
+      dest: /var/www/html/wordpress/
+  - name: Restart Apache
+    become: yes
+    become_user: root
+    service:
+      name: apache2
+      state: restarted
+  - name: Create an RDS database for WordPress
+    rds:
+      command: create
+      instance_name: wordpress_db
+      db_engine: mysql
+      size: 5
+      username: wpuser
+      password: wppassword
+      region: us-east-1
+      state: present
+  - name: Create a load balancer
+    elb_loadbalancer:
+      name: WordPress-ELB
+      subnets:
+        - subnet-0ec33c1c9a6a26a09
+        - subnet-0ec32c2c9a6a26a04
+      security_groups:
+        - sg-049be3ea19dfbfabb
+      listeners:
+        - protocol: http
+          lb_port: 80
+          instance_port: 80
+      health_check:
+        ping_target: HTTP:80/
+        interval: 30
+        healthy_threshold: 2
+        unhealthy_threshold: 2
+      state: present
+  - name: Add instances to the load balancer
+    elb_instance:
+      state: present
+      instances: "{{ ec2_asg.instance_ids }}"
+      load_bal
+
