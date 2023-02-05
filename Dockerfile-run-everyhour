@@ -1,0 +1,19 @@
+FROM ubuntu:20.04
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    ansible \
+    awscli \
+    curl
+
+COPY awsha.yml /root/awsha.yml
+COPY wp-config.php /root/wp-config.php
+COPY add_post_to_wordpress.sh /root/add_post_to_wordpress.sh
+
+WORKDIR /root
+
+RUN chmod +x add_post_to_wordpress.sh
+
+CMD ["/bin/bash", "-c", "./add_post_to_wordpress.sh && ansible-playbook awsha.yml"]
+
