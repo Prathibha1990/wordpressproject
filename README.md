@@ -42,10 +42,10 @@ docker run deploy-wordpress-on-aws-ec2
 
 The above command will run the playbook inside a Docker container, allowing you to run the playbook on any machine that has Docker installed.
 
-Dockerfile-run-everyhour
+**Dockerfile-run-everyhour**
 Here's an updated Dockerfile-run-everyhour that runs a script that creates a new post on the WordPress site every hour.
 
-add_post_to_wordpress.sh
+**add_post_to_wordpress.sh**
 The content of the add_post_to_wordpress.sh script that adds a new post to the WordPress site every hour.
 This Docker image can be built and run in the same way as described in the previous answer. When the Docker container starts, the script will start adding new posts to the WordPress site every hour.
 
