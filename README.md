@@ -28,3 +28,17 @@ Copy code
 ansible-playbook ec2.yml
 Wait for the playbook to complete the execution, which typically takes a few minutes.
 Access the WordPress site using the URL provided by the ELB.
+
+In the same repo, add a Docker file, so that we can build a docker image and
+run your Ansible playbook on any machine as long as Docker is installed?
+
+**Dockerfile**
+Here's a Dockerfile that can be used to build a Docker image that contains all the necessary components to run the Ansible playbook:
+To build the Docker image, run the following command in the terminal:
+docker build -t deploy-wordpress-on-aws-ec2 .
+
+Once the image is built, you can run the Ansible playbook by executing the following command:
+docker run deploy-wordpress-on-aws-ec2
+
+The above command will run the playbook inside a Docker container, allowing you to run the playbook on any machine that has Docker installed.
+
