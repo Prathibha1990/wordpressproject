@@ -1,0 +1,13 @@
+---
+- name: Start EC2 instance
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Start myserver instance
+    local_action:
+         module: ec2
+         region: us-east-1
+         instance_ids: ['i-00165872688897feb']
+         state: running
+...
+
