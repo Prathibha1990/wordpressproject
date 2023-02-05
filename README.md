@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Make the WordPress site as High available as possible if you got time, use
 whatever AWS service as you see fit?
 and
@@ -49,4 +50,17 @@ Here's an updated Dockerfile-run-everyhour that runs a script that creates a new
 The content of the add_post_to_wordpress.sh script that adds a new post to the WordPress site every hour.
 This Docker image can be built and run in the same way as described in the previous answer. When the Docker container starts, the script will start adding new posts to the WordPress site every hour.
 
+=======
+• Write an Ansible playbook that deploy WordPress on AWS using EC2
+running Linux?
+
+This ansible playbook for above 2 quetions.
+Replace "23rlkey" in the playbook with the actual name of your EC2 key pair, and make sure to also include your wp-config.php file in the same directory as the playbook.
+Add DB name, user name and Password in the wp-config.php.
+
+• You can assume a fresh EC2 is already up and running, or start one from the
+playbook?
+
+ec2start.yml => start the ec2 instance with ansible playbook.
+>>>>>>> ab519735e57d967d14527c760656bd749639c966
 
