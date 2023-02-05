@@ -6,10 +6,10 @@ RUN apt-get update && apt-get install -y \
     ansible \
     awscli
 
-COPY ec2.yml /root/ec2.yml
+COPY awsha.yml /root/awsha.yml
 COPY wp-config.php /root/wp-config.php
 
 WORKDIR /root
 
-CMD ["ansible-playbook", "ec2.yml"]
+CMD ["ansible-playbook", "awsha.yml"]
 
